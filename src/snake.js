@@ -28,11 +28,11 @@ class Snake {
 		let collection = [...this.collection];
 		collection.splice(0, 1);
 		this.collection = [...collection, {x:this.collection[this.collection.length-1].x+1, y:0}];
-		console.log(this.collection);
-		setTimeout(()=>{
-			this.tick();
-			// TODO:fire rerender here
-		}, 1000);
+		// this.collection.map(item=>{
+		//
+		// 	// this.rect.setAttribute('style', `fill:rgb(${this.snake.check(x, y) ? '0, 0, 0' : '255,255,255'});stroke-width:1;stroke:rgb(0,0,0)`);
+		// })
+
 	}
 
 	changeDirection(direction) {
