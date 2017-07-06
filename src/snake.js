@@ -22,7 +22,8 @@ class Snake {
 		// return !!~this.collection.indexOf({x,y});
 
 		// as soon as acc will become true it will always return true
-		// it will become true as soon, as the first coincidence will be detected BUT it won`t exit from the method, so:
+		// it will become true as soon, as the first coincidence
+		// will be detected BUT it won`t exit from the method, so:
 		// TODO: rewrite it using 'for' can be a good idea
 		return this.collection.reduce((acc, item)=>(acc || item.x === x && item.y === y), false);
 	}
