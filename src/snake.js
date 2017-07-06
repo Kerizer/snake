@@ -11,6 +11,7 @@ class Snake {
 			{x:2, y:0},
 			{x:3, y:0}
 		];
+		this.removed = null;
 		this.tick();
 	}
 
@@ -26,6 +27,7 @@ class Snake {
 
 	tick() {
 		let collection = [...this.collection];
+		this.removed = collection[0];
 		collection.splice(0, 1);
 		this.collection = [...collection, {x:this.collection[this.collection.length-1].x+1, y:0}];
 		// this.collection.map(item=>{

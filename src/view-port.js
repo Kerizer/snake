@@ -62,6 +62,10 @@ class ViewPort {
 	}
 
 	render() {
+		if (this.snake.removed) {
+			this.rectMatrix[this.snake.removed.y][this.snake.removed.x].setAttribute('style', `fill:rgb(255,255,255);stroke-width:1;stroke:rgb(0,0,0)`);;
+		}
+		console.log(this.snake.removed);
 		this.snake.collection.map(item=>{
 			this.rectMatrix[item.y][item.x].setAttribute('style', `fill:rgb(0,0,0);stroke-width:1;stroke:rgb(0,0,0)`);
 		});
