@@ -8,8 +8,8 @@ const COLS = 50;
 const RECT_SIZE = 13;
 const SPEED = 1000; // miliseconds
 const INPUT_KEYS = {
-	LEFT: 65,
-	RIGHT: 68,
-	DOWN: 83,
-	UP: 87
+	'97':'LEFT',
+	'100':'RIGHT',
+	'115':'BOTTOM',
+	'119':'TOP'
 };

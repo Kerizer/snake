@@ -15,6 +15,7 @@ class Snake {
 			{x:6, y:0}
 		];
 		this.removed = null;
+		document.addEventListener("keypress", this.handleChange);
 	}
 
 	check(x, y) {
@@ -33,6 +34,7 @@ class Snake {
 		let head = this.collection[this.collection.length-1];
 		this.removed = collection[0];
 		collection.splice(0, 1);
+		console.log(this.direction)
 		let newSquare = {
 			x:head.x + (this.direction === 'RIGHT' ? 1 : this.direction === 'LEFT' ? -1 : 0),
 			y:head.y + (this.direction === 'BOTTOM' ? 1 : this.direction === 'TOP' ? -1 : 0)
@@ -41,7 +43,8 @@ class Snake {
 
 	}
 
-	changeDirection(direction) {
-
+	handleChange(event) {
+		this.direction = INPUT_KEYS[event.keyCode];
+		console.log(this.direction)
 	}
 }

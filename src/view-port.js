@@ -19,7 +19,7 @@ class ViewPort {
 		let x, y, rectWrapper;
 		for (y=0; y<ROWS; y++) {
 			this.rectMatrix[y] = [];
-				for (x=0; x<COLS; x++) {
+			for (x=0; x<COLS; x++) {
 				rectWrapper = document.createElementNS('http://www.w3.org/2000/svg','svg');
 				rectWrapper.setAttribute('x', (x*RECT_SIZE).toString());
 				rectWrapper.setAttribute('y', (y*RECT_SIZE).toString());
