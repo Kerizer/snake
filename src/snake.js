@@ -29,11 +29,12 @@ class Snake {
 
 	tick() {
 		let collection = [...this.collection];
+		let head = this.collection[this.collection.length-1];
 		this.removed = collection[0];
 		collection.splice(0, 1);
 		let newSquare = {
-			x:this.collection[this.collection.length-1].x + (this.direction === 'RIGHT' ? 1 : this.direction === 'LEFT' ? -1 : 0),
-			y:this.collection[this.collection.length-1].y + (this.direction === 'BOTTOM' ? 1 : this.direction === 'TOP' ? -1 : 0)
+			x:head.x + (this.direction === 'RIGHT' ? 1 : this.direction === 'LEFT' ? -1 : 0),
+			y:head.y + (this.direction === 'BOTTOM' ? 1 : this.direction === 'TOP' ? -1 : 0)
 		};
 		this.collection = [...collection, newSquare];
 

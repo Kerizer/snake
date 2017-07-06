@@ -50,12 +50,13 @@ class ViewPort {
 	}
 
 	tick() {
-		let head = this.snake.collection[this.snake.collection.length-1];
-		if (head.x === COLS -2 || head.y === ROWS -2 ) {
-			console.log('loose');
-			return;
-		}
+
 		setTimeout(()=>{
+			let head = this.snake.collection[this.snake.collection.length-1];
+			if (head.x === COLS - 1 || head.y === ROWS - 1 || head.x === 0 || head.y === 0) {
+				console.log('loose');
+				return;
+			}
 			this.tick();
 			this.snake.tick();
 			this.render();
