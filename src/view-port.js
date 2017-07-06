@@ -50,13 +50,14 @@ class ViewPort {
 	}
 
 	tick() {
-		this.snake.tick();
-		if (this.snake.collection[2].x === COLS -1 || this.snake.collection[2].y === ROWS) {
+		let head = this.snake.collection[this.snake.collection.length-1];
+		if (head.x === COLS -2 || head.y === ROWS -2 ) {
 			console.log('loose');
 			return;
 		}
 		setTimeout(()=>{
 			this.tick();
+			this.snake.tick();
 			this.render();
 		}, 300);
 	}
@@ -65,7 +66,7 @@ class ViewPort {
 		if (this.snake.removed) {
 			this.rectMatrix[this.snake.removed.y][this.snake.removed.x].setAttribute('style', `fill:rgb(255,255,255);stroke-width:1;stroke:rgb(0,0,0)`);;
 		}
-		console.log(this.snake.removed);
+		console.log(this.snake.collection);
 		this.snake.collection.map(item=>{
 			this.rectMatrix[item.y][item.x].setAttribute('style', `fill:rgb(0,0,0);stroke-width:1;stroke:rgb(0,0,0)`);
 		});

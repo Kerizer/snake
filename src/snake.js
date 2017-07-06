@@ -9,10 +9,12 @@ class Snake {
 		this.collection = [
 			{x:1, y:0},
 			{x:2, y:0},
-			{x:3, y:0}
+			{x:3, y:0},
+			{x:4, y:0},
+			{x:5, y:0},
+			{x:6, y:0}
 		];
 		this.removed = null;
-		this.tick();
 	}
 
 	check(x, y) {
@@ -29,11 +31,11 @@ class Snake {
 		let collection = [...this.collection];
 		this.removed = collection[0];
 		collection.splice(0, 1);
-		this.collection = [...collection, {x:this.collection[this.collection.length-1].x+1, y:0}];
-		// this.collection.map(item=>{
-		//
-		// 	// this.rect.setAttribute('style', `fill:rgb(${this.snake.check(x, y) ? '0, 0, 0' : '255,255,255'});stroke-width:1;stroke:rgb(0,0,0)`);
-		// })
+		let newSquare = {
+			x:this.collection[this.collection.length-1].x + (this.direction === 'RIGHT' ? 1 : this.direction === 'LEFT' ? -1 : 0),
+			y:this.collection[this.collection.length-1].y + (this.direction === 'BOTTOM' ? 1 : this.direction === 'TOP' ? -1 : 0)
+		};
+		this.collection = [...collection, newSquare];
 
 	}
 

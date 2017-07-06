@@ -4,7 +4,7 @@
  */
 
 const ROWS = 50;
-const COLS = 30;
+const COLS = 50;
 const RECT_SIZE = 13;
 const SPEED = 1000; // miliseconds
 const INPUT_KEYS = {
