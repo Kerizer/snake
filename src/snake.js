@@ -33,7 +33,6 @@ class Snake {
 		let head = this.collection[this.collection.length-1];
 		this.removed = collection[0];
 		collection.splice(0, 1);
-		console.log(this.direction)
 		let newSquare = {
 			x:head.x + (this.direction === 'RIGHT' ? 1 : this.direction === 'LEFT' ? -1 : 0),
 			y:head.y + (this.direction === 'BOTTOM' ? 1 : this.direction === 'TOP' ? -1 : 0)
