@@ -57,13 +57,17 @@ class ViewPort {
 				this.viewPort.appendChild(rectWrapper);
 			}
 		}
+		this.score = document.querySelector("#score");
+		// this.scoreBox.appendChild('s');
 		return this.tick();
 	}
 
 	tick() {
 		setTimeout(()=>{
 			let head = this.snake.collection[this.snake.collection.length-1];
-			if (head.x === COLS - 1 || head.y === ROWS - 1 || head.x < 0 || head.y < 0) {
+			let isWallCollisionOccurred = head.x === COLS - 1 || head.y === ROWS - 1 || head.x < 0 || head.y < 0;
+			let isSelfCollisionOccurred = this.snake.checkSelfCollision();
+			if (isWallCollisionOccurred || isSelfCollisionOccurred) {
 				console.log('loose');
 				return;
 			}
@@ -93,7 +97,9 @@ class ViewPort {
 				this.rectMatrix[item.y][item.x].setAttribute('style', `fill:rgb(0,0,0);stroke-width:1;stroke:rgb(0,0,0)`);
 			}
 		});
-
+		// console.log(this.score);
+		// console.log(this.snake.eatenCount);
+		this.score.innerHTML = this.snake.eatenCount;
 		return this.viewPort
 	}
 

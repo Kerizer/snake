@@ -31,18 +31,27 @@ class Snake {
 		return this.collection.reduce((acc, item)=>(acc || item.x === x && item.y === y), false);
 	}
 
+	nextRectCoordinates() {
+		let head = this.collection[this.collection.length-1];
+		return {
+			x:head.x + (this.direction === 'RIGHT' ? 1 : this.direction === 'LEFT' ? -1 : 0),
+			y:head.y + (this.direction === 'BOTTOM' ? 1 : this.direction === 'TOP' ? -1 : 0)
+		};
+	}
+
+	checkSelfCollision() {
+		let nextRectCoordinates = this.nextRectCoordinates();
+		return this.check(nextRectCoordinates.x, nextRectCoordinates.y);
+	}
+
 	tick(foodCoordinates) {
 		let collection = [...this.collection];
-		let head = this.collection[this.collection.length-1];
 		this.direction = this.nextDirection || this.direction;
 		this.removed = collection[0];
 		collection.splice(0, 1);
 		this.eaten = false;
-		let newSquare = {
-			x:head.x + (this.direction === 'RIGHT' ? 1 : this.direction === 'LEFT' ? -1 : 0),
-			y:head.y + (this.direction === 'BOTTOM' ? 1 : this.direction === 'TOP' ? -1 : 0)
-		};
-		this.collection = [...collection, newSquare];
+
+		this.collection = [...collection, this.nextRectCoordinates()];
 
 		if (this.check(foodCoordinates.x, foodCoordinates.y)) {
 			this.eaten = true;
