@@ -7,6 +7,7 @@ class Snake {
 	constructor() {
 		this.direction = 'RIGHT';
 		this.nextDirection = 'RIGHT';
+		this.eaten = false;
 		this.collection = [
 			{x:1, y:0},
 			{x:2, y:0},
@@ -33,19 +34,22 @@ class Snake {
 		let collection = [...this.collection];
 		let head = this.collection[this.collection.length-1];
 		this.direction = this.nextDirection || this.direction;
-		if (!this.check(foodCoordinates.x, foodCoordinates.y)) {
-			this.removed = collection[0];
-			collection.splice(0, 1);
-		} else {
-			this.removed = null;
-		}
-
+		this.removed = collection[0];
+		collection.splice(0, 1);
+		this.eaten = false;
 		let newSquare = {
 			x:head.x + (this.direction === 'RIGHT' ? 1 : this.direction === 'LEFT' ? -1 : 0),
 			y:head.y + (this.direction === 'BOTTOM' ? 1 : this.direction === 'TOP' ? -1 : 0)
 		};
 		this.collection = [...collection, newSquare];
 
+		if (this.check(foodCoordinates.x, foodCoordinates.y)) {
+			this.eaten = true;
+			this.collection.unshift({
+				x:foodCoordinates.x,
+				y:foodCoordinates.y
+			});
+		}
 	}
 
 	handleChange(direction) {

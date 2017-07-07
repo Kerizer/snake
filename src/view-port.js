@@ -66,7 +66,7 @@ class ViewPort {
 			this.tick();
 			this.snake.tick(this.food);
 			this.render();
-		}, 300);
+		}, SPEED);
 	}
 
 	handleKeyPress(event, snake) {
@@ -78,7 +78,9 @@ class ViewPort {
 	render() {
 		if (this.snake.removed) {
 			this.rectMatrix[this.snake.removed.y][this.snake.removed.x].setAttribute('style', `fill:rgb(255,255,255);stroke-width:1;stroke:rgb(0,0,0)`);;
-		} else {
+		}
+
+		if (this.snake.eaten) {
 			this.food = this.constructor.generateFoodCoordinates(this.snake.collection);
 		}
 		this.rectMatrix[this.food.y][this.food.x].setAttribute('style', `fill:rgb(0,0,0);stroke-width:1;stroke:rgb(0,0,0)`);
