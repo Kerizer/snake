@@ -24,6 +24,10 @@ class ViewPort {
 		return _r;
 	}
 
+	static tickSpeed(eatenCount) {
+		return SPEED * 1/Math.pow(eatenCount, 0.2);
+	}
+
 	constructor() {
 		this.snake = new Snake();
 
@@ -66,7 +70,7 @@ class ViewPort {
 			this.tick();
 			this.snake.tick(this.food);
 			this.render();
-		}, SPEED);
+		}, this.constructor.tickSpeed(this.snake.eatenCount || 0.75));
 	}
 
 	handleKeyPress(event, snake) {

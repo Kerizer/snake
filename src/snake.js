@@ -17,6 +17,7 @@ class Snake {
 			{x:6, y:0}
 		];
 		this.removed = null;
+		this.eatenCount = 0;
 	}
 
 	check(x, y) {
@@ -45,6 +46,7 @@ class Snake {
 
 		if (this.check(foodCoordinates.x, foodCoordinates.y)) {
 			this.eaten = true;
+			this.eatenCount++;
 			this.collection.unshift({
 				x:foodCoordinates.x,
 				y:foodCoordinates.y
