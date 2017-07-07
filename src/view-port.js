@@ -7,7 +7,7 @@ class ViewPort {
 	static generateFoodCoordinates(snakeCollection) {
 		const _getCoordinates = ()=>{
 			return {
-				y:0,
+				y:Math.floor(Math.random() * (ROWS)),
 				x:Math.floor(Math.random() * (COLS))
 			}
 		};
