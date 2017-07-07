@@ -5,30 +5,29 @@
 
 class ViewPort {
 	static generateFoodCoordinates(snakeCollection) {
-		const getCoordinates = ()=>{
+		const _getCoordinates = ()=>{
 			return {
 				y:Math.floor(Math.random() * (ROWS)),
 				x:Math.floor(Math.random() * (COLS))
 			}
 		};
-		const check = () => {
+		let _r =_getCoordinates();
+		const _check = (x, y) => {
 			return snakeCollection.reduce((acc, item)=> {
-				return acc || (item.x === test.x && item.y === test.y)
+				return acc || (item.x === x && item.y === y)
 			}, false)
 		};
 
-		let test = getCoordinates();
-
-		while (check()) {
-			console.log(test, ' is under the snake');
-			test = getCoordinates();
+		while (_check(_r.x, _r.y)) {
+			_r = _getCoordinates();
 		}
-		return test;
+		return _r;
 	}
 
 	constructor() {
 		this.snake = new Snake();
 
+		this.lastMove = 0;
 		document.addEventListener("keypress", (e)=>{this.handleKeyPress(e, this.snake)});
 
 		this.viewPort = document.createElementNS('http://www.w3.org/2000/svg','svg');
@@ -38,7 +37,7 @@ class ViewPort {
 		this.rect.setAttribute('width', RECT_SIZE);
 		this.rect.setAttribute('height', RECT_SIZE);
 
-		this.food = {};
+		this.food = this.constructor.generateFoodCoordinates(this.snake.collection);
 
 		// We should have a ROWS x COLS matrix
 		this.rectMatrix = [];
@@ -73,8 +72,9 @@ class ViewPort {
 	}
 
 	handleKeyPress(event, snake) {
-		if (INPUT_KEYS[event.keyCode]) {
-			this.snake.handleChange(INPUT_KEYS[event.keyCode], snake)
+		if (Date.now() - this.lastMove > SPEED && INPUT_KEYS[event.keyCode]) {
+			this.snake.handleChange(INPUT_KEYS[event.keyCode], snake);
+			this.lastMove = Date.now();
 		}
 	}
 
