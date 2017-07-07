@@ -6,6 +6,9 @@
 class ViewPort {
 	constructor() {
 		this.snake = new Snake();
+
+		document.addEventListener("keypress", (e)=>{this.handleKeyPress(e, this.snake)});
+
 		this.viewPort = document.createElementNS('http://www.w3.org/2000/svg','svg');
 		this.viewPort.setAttribute('height', (ROWS*RECT_SIZE).toString());
 		this.viewPort.setAttribute('width', (COLS*RECT_SIZE).toString());
@@ -36,6 +39,7 @@ class ViewPort {
 	tick() {
 		setTimeout(()=>{
 			let head = this.snake.collection[this.snake.collection.length-1];
+			console.log(head);
 			if (head.x === COLS - 1 || head.y === ROWS - 1 || head.x < 0 || head.y < 0) {
 				console.log('loose');
 				return;
@@ -46,12 +50,20 @@ class ViewPort {
 		}, 300);
 	}
 
+	handleKeyPress(event, snake) {
+		if (INPUT_KEYS[event.keyCode]) {
+			this.snake.handleChange(INPUT_KEYS[event.keyCode], snake)
+		}
+	}
+
 	render() {
 		if (this.snake.removed) {
 			this.rectMatrix[this.snake.removed.y][this.snake.removed.x].setAttribute('style', `fill:rgb(255,255,255);stroke-width:1;stroke:rgb(0,0,0)`);;
 		}
 		this.snake.collection.map(item=>{
-			this.rectMatrix[item.y][item.x].setAttribute('style', `fill:rgb(0,0,0);stroke-width:1;stroke:rgb(0,0,0)`);
+			if (this.rectMatrix[item.y] && this.rectMatrix[item.y][item.x]) {
+				this.rectMatrix[item.y][item.x].setAttribute('style', `fill:rgb(0,0,0);stroke-width:1;stroke:rgb(0,0,0)`);
+			}
 		});
 
 		return this.viewPort

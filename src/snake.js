@@ -15,7 +15,6 @@ class Snake {
 			{x:6, y:0}
 		];
 		this.removed = null;
-		document.addEventListener("keypress", this.handleChange);
 	}
 
 	check(x, y) {
@@ -43,8 +42,16 @@ class Snake {
 
 	}
 
-	handleChange(event) {
-		this.direction = INPUT_KEYS[event.keyCode];
-		console.log(this.direction)
+	handleChange(direction) {
+		const invalidDirections = [
+			direction === 'BOTTOM' && this.direction === 'TOP',
+			direction === 'TOP' && this.direction === 'BOTTOM',
+			direction === 'RIGHT' && this.direction === 'LEFT',
+			direction === 'LEFT' && this.direction === 'RIGHT'
+		];
+		if (~invalidDirections.indexOf(true)) {
+			return null;
+		}
+		this.direction = direction;
 	}
 }
