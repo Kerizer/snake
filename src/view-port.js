@@ -4,11 +4,11 @@
  */
 
 class ViewPort {
-	static generateFoodCoordinates(snakeCollection) {
+	static generateFoodCoordinates(snakeCollection, totalRows, totalCols) {
 		const _getCoordinates = ()=>{
 			return {
-				y:Math.floor(Math.random() * (ROWS)),
-				x:Math.floor(Math.random() * (COLS))
+				y:Math.floor(Math.random() * (totalRows)),
+				x:Math.floor(Math.random() * (totalCols))
 			}
 		};
 		let _r =_getCoordinates();
@@ -24,32 +24,44 @@ class ViewPort {
 		return _r;
 	}
 
-	static tickSpeed(eatenCount) {
-		return SPEED * 1/Math.pow(eatenCount, 0.2);
+	static tickSpeed(speed, eatenCount) {
+		return speed * 1/Math.pow(eatenCount, 0.2);
 	}
 
-	constructor() {
+	constructor(options) {
+		this.options = {
+			ROWS:options.ROWS || 50,
+			COLS:options.COLS || 50,
+			RECT_SIZE:options.RECT_SIZE || 12,
+			SPEED:options.SPEED || 100,  // miliseconds
+			INPUT_KEYS:options.INPUT_KEYS || {
+				'37':'LEFT',
+				'39':'RIGHT',
+				'40':'BOTTOM',
+				'38':'TOP'
+			}
+		};
 		this.snake = new Snake();
 
-		document.addEventListener("keypress", (e)=>{this.handleKeyPress(e, this.snake)});
+		document.addEventListener("keydown", (e)=>{this.handleKeyPress(e, this.snake)});
 
 		this.viewPort = document.createElementNS('http://www.w3.org/2000/svg','svg');
-		this.viewPort.setAttribute('height', (ROWS*RECT_SIZE).toString());
-		this.viewPort.setAttribute('width', (COLS*RECT_SIZE).toString());
+		this.viewPort.setAttribute('height', (this.options.ROWS*this.options.RECT_SIZE).toString());
+		this.viewPort.setAttribute('width', (this.options.COLS*this.options.RECT_SIZE).toString());
 		this.rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-		this.rect.setAttribute('width', RECT_SIZE);
-		this.rect.setAttribute('height', RECT_SIZE);
+		this.rect.setAttribute('width', this.options.RECT_SIZE);
+		this.rect.setAttribute('height', this.options.RECT_SIZE);
 
-		this.food = this.constructor.generateFoodCoordinates(this.snake.collection);
+		this.food = this.constructor.generateFoodCoordinates(this.snake.collection, this.options.ROWS, this.options.COLS);
 		// We should have a ROWS x COLS matrix
 		this.rectMatrix = [];
 		let x, y, rectWrapper;
-		for (y=0; y<ROWS; y++) {
+		for (y=0; y<this.options.ROWS; y++) {
 			this.rectMatrix[y] = [];
-			for (x=0; x<COLS; x++) {
+			for (x=0; x<this.options.COLS; x++) {
 				rectWrapper = document.createElementNS('http://www.w3.org/2000/svg','svg');
-				rectWrapper.setAttribute('x', (x*RECT_SIZE).toString());
-				rectWrapper.setAttribute('y', (y*RECT_SIZE).toString());
+				rectWrapper.setAttribute('x', (x*this.options.RECT_SIZE).toString());
+				rectWrapper.setAttribute('y', (y*this.options.RECT_SIZE).toString());
 				this.rectMatrix[y][x] = this.rect.cloneNode(false);
 				this.rectMatrix[y][x].setAttribute('id', `tile-x-${x}-y-${y}`);
 				this.rectMatrix[y][x].setAttribute('style', `fill:rgb(255,255,255);stroke-width:1;stroke:rgb(0,0,0)`);
@@ -65,7 +77,7 @@ class ViewPort {
 	tick() {
 		setTimeout(()=>{
 			let head = this.snake.collection[this.snake.collection.length-1];
-			let isWallCollisionOccurred = head.x === COLS - 1 || head.y === ROWS - 1 || head.x < 0 || head.y < 0;
+			let isWallCollisionOccurred = head.x === this.options.COLS - 1 || head.y === this.options.ROWS - 1 || head.x < 0 || head.y < 0;
 			let isSelfCollisionOccurred = this.snake.checkSelfCollision();
 			if (isWallCollisionOccurred || isSelfCollisionOccurred) {
 				console.log('loose');
@@ -74,12 +86,12 @@ class ViewPort {
 			this.tick();
 			this.snake.tick(this.food);
 			this.render();
-		}, this.constructor.tickSpeed(this.snake.eatenCount || 0.75));
+		}, this.constructor.tickSpeed(this.options.SPEED, (this.snake.eatenCount || 0.75)));
 	}
 
 	handleKeyPress(event, snake) {
-		if (INPUT_KEYS[event.keyCode]) {
-			this.snake.handleChange(INPUT_KEYS[event.keyCode], snake);
+		if (this.options.INPUT_KEYS[event.keyCode]) {
+			this.snake.handleChange(this.options.INPUT_KEYS[event.keyCode], snake);
 		}
 	}
 
@@ -89,7 +101,7 @@ class ViewPort {
 		}
 
 		if (this.snake.eaten) {
-			this.food = this.constructor.generateFoodCoordinates(this.snake.collection);
+			this.food = this.constructor.generateFoodCoordinates(this.snake.collection, this.options.ROWS, this.options.COLS);
 		}
 		this.rectMatrix[this.food.y][this.food.x].setAttribute('style', `fill:rgb(0,0,0);stroke-width:1;stroke:rgb(0,0,0)`);
 		this.snake.collection.map(item=>{
