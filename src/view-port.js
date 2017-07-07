@@ -7,7 +7,7 @@ class ViewPort {
 	static generateFoodCoordinates(snakeCollection) {
 		const _getCoordinates = ()=>{
 			return {
-				y:Math.floor(Math.random() * (ROWS)),
+				y:0,
 				x:Math.floor(Math.random() * (COLS))
 			}
 		};
@@ -27,7 +27,6 @@ class ViewPort {
 	constructor() {
 		this.snake = new Snake();
 
-		this.lastMove = 0;
 		document.addEventListener("keypress", (e)=>{this.handleKeyPress(e, this.snake)});
 
 		this.viewPort = document.createElementNS('http://www.w3.org/2000/svg','svg');
@@ -38,7 +37,6 @@ class ViewPort {
 		this.rect.setAttribute('height', RECT_SIZE);
 
 		this.food = this.constructor.generateFoodCoordinates(this.snake.collection);
-
 		// We should have a ROWS x COLS matrix
 		this.rectMatrix = [];
 		let x, y, rectWrapper;
@@ -66,22 +64,24 @@ class ViewPort {
 				return;
 			}
 			this.tick();
-			this.snake.tick();
+			this.snake.tick(this.food);
 			this.render();
 		}, 300);
 	}
 
 	handleKeyPress(event, snake) {
-		if (Date.now() - this.lastMove > SPEED && INPUT_KEYS[event.keyCode]) {
+		if (INPUT_KEYS[event.keyCode]) {
 			this.snake.handleChange(INPUT_KEYS[event.keyCode], snake);
-			this.lastMove = Date.now();
 		}
 	}
 
 	render() {
 		if (this.snake.removed) {
 			this.rectMatrix[this.snake.removed.y][this.snake.removed.x].setAttribute('style', `fill:rgb(255,255,255);stroke-width:1;stroke:rgb(0,0,0)`);;
+		} else {
+			this.food = this.constructor.generateFoodCoordinates(this.snake.collection);
 		}
+		this.rectMatrix[this.food.y][this.food.x].setAttribute('style', `fill:rgb(0,0,0);stroke-width:1;stroke:rgb(0,0,0)`);
 		this.snake.collection.map(item=>{
 			if (this.rectMatrix[item.y] && this.rectMatrix[item.y][item.x]) {
 				this.rectMatrix[item.y][item.x].setAttribute('style', `fill:rgb(0,0,0);stroke-width:1;stroke:rgb(0,0,0)`);

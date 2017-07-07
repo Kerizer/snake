@@ -6,7 +6,7 @@
 const ROWS = 50;
 const COLS = 50;
 const RECT_SIZE = 13;
-const SPEED = 1000; // miliseconds
+const SPEED = 500; // miliseconds
 const INPUT_KEYS = {
 	'97':'LEFT',
 	'100':'RIGHT',
